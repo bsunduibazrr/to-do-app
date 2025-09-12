@@ -1,37 +1,56 @@
 "use client";
 import { useState } from "react";
 import "./index.css";
+import ShortUniqueId from "short-unique-id";
+
+const uid = new ShortUniqueId();
 
 export default function Home() {
   const [filter, setFilter] = useState("All");
   const [activities, setActivities] = useState([]);
   const [value, setValue] = useState("");
   const [showDelete, setShowDelete] = useState(true);
+  const uidWithTimestamp = uid.stamp(32);
 
   const handleAddButton = () => {
     if (value.trim() === "") return;
-    setActivities([...activities, { text: value.trim(), completed: false }]);
+
+    setActivities([
+      ...activities,
+      {
+        text: value.trim(),
+        completed: false,
+        id: uidWithTimestamp,
+      },
+    ]);
     setValue("");
     setShowDelete(false);
   };
+  console.log(activities);
 
-  const handleToggleCompleted = (index) => {
-    const updated = [...activities];
-    updated[index].completed = !updated[index].completed;
+  const handleToggleCompleted = (id) => {
+    const updated = activities.map((activity) =>
+      activity.id === id
+        ? { ...activity, completed: !activity.completed }
+        : activity
+    );
     setActivities(updated);
   };
 
-  const handleDelete = (index) => {
-    const updated = activities.filter((_, i) => i !== index);
+  const handleDelete = (id) => {
+    const updated = activities.filter((activity) => activity.id !== id);
     setActivities(updated);
   };
 
-  const handleClearCompleted = () => {};
+  const handleClearCompleted = () => {
+    const updated = activities.filter((activity) => !activity.completed);
+    setActivities(updated);
+  };
 
   const filteredActivities = activities.filter((activity) => {
     if (filter === "Active") return !activity.completed;
-    if (filter === "Completed") return activity.completed;
-    return true;
+    else if (filter === "Completed") return activity.completed;
+    else return true;
   });
 
   const completedCount = activities.filter((a) => a.completed).length;
@@ -69,7 +88,6 @@ export default function Home() {
             className="active"
             onClick={() => setFilter("Active")}
             style={{
-              transition: "background: 0.5s ease-in-out",
               backgroundColor: filter === "Active" ? "#3b73ed" : "#f3f4f6",
               color: filter === "Active" ? "white" : "black",
             }}
@@ -89,9 +107,9 @@ export default function Home() {
         </div>
 
         <div className="task-list">
-          {filteredActivities.map((activity, index) => (
+          {filteredActivities.map((activity) => (
             <div
-              key={index}
+              key={activity.id}
               className={`task-row ${
                 activity.completed ? "completed-task" : ""
               }`}
@@ -104,23 +122,18 @@ export default function Home() {
                   width: "100%",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "10px",
-                  }}
-                >
+                <div style={{ display: "flex", gap: "10px" }}>
                   <input
                     type="checkbox"
                     className="task-checkbox"
                     checked={activity.completed}
-                    onChange={() => handleToggleCompleted(index)}
+                    onChange={() => handleToggleCompleted(activity.id)}
                   />
                   <span>{activity.text}</span>
                 </div>
                 <div>
                   <button
-                    onClick={() => handleDelete(index)}
+                    onClick={() => handleDelete(activity.id)}
                     className="delete"
                   >
                     DELETE

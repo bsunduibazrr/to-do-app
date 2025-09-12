@@ -20,6 +20,7 @@ body {
   box-sizing: border-box;
   width: 387px;
   min-height: 370px;
+
   border-radius: 20px;
   background-color: white;
   box-shadow: -4px 0px 53px 19px rgba(11, 219, 182, 1);
@@ -105,32 +106,7 @@ body {
   font-size: 14px;
   padding-top: 20px;
 }
-/* .check {
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  padding-left: 30px;
-}
-.header2 {
-  width: 345px;
-  height: 62px;
-  border-radius: 10px;
-  background-color: #f9fafb;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  padding-left: 20px;
-}
-.flexx {
-  display: flex;
-  justify-content: center;
-  padding-top: 30px;
-}
-.create {
-  color: black;
-  padding-left: 20px;
-} */
+
 .task-list {
   margin-top: 20px;
   display: flex;
@@ -138,7 +114,7 @@ body {
   align-items: center;
   gap: 20px;
   max-height: 150px;
-  overflow-y: auto;
+  overflow-y: scroll;
   margin-left: 16px;
 }
 
