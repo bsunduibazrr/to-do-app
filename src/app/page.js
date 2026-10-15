@@ -56,7 +56,7 @@ export default function Home() {
   const completedCount = activities.filter((a) => a.completed).length;
 
   return (
-    <div className="center">
+    <div className="center" style="display; flex; justify-content: center; align-items: center;>
       <div className="header">
         <p className="hello">TO-DO LIST</p>
 
